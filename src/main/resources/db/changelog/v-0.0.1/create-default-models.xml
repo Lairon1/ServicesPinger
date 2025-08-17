@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <!-- ===================== Table: Notification ===================== -->
+    <changeSet id="1-create-notification" author="chatgpt">
+        <createTable tableName="notification">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="enabled" type="BOOLEAN" />
+            <column name="sound_enabled" type="BOOLEAN" />
+            <column name="sending_period" type="BIGINT" />
+        </createTable>
+    </changeSet>
+
+    <!-- ===================== Table: NotificationsSettings ===================== -->
+    <changeSet id="2-create-notifications_settings" author="chatgpt">
+        <createTable tableName="notifications_settings">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="period_notifications_id" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="warning_notifications_id" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="notifications_settings"
+                                 baseColumnNames="period_notifications_id"
+                                 referencedTableName="notification"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_notifications_settings_period" />
+        <addForeignKeyConstraint baseTableName="notifications_settings"
+                                 baseColumnNames="warning_notifications_id"
+                                 referencedTableName="notification"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_notifications_settings_warning" />
+    </changeSet>
+
+    <!-- ===================== Table: Project ===================== -->
+    <changeSet id="3-create-project" author="chatgpt">
+        <createTable tableName="project">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="address" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="ping_type" type="TINYINT">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- ===================== Table: User ===================== -->
+    <changeSet id="4-create-user" author="chatgpt">
+        <createTable tableName="user">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="chat_id" type="BIGINT" />
+            <column name="notifications_settings_id" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="user"
+                                 baseColumnNames="notifications_settings_id"
+                                 referencedTableName="notifications_settings"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_user_notifications_settings" />
+    </changeSet>
+
+    <!-- ===================== User -> Project relation ===================== -->
+    <changeSet id="5-user-project-relation" author="chatgpt">
+        <createTable tableName="user_projects">
+            <column name="user_id" type="BIGINT" />
+            <column name="project_id" type="BIGINT" />
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="user_projects"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_user_projects_user" />
+        <addForeignKeyConstraint baseTableName="user_projects"
+                                 baseColumnNames="project_id"
+                                 referencedTableName="project"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_user_projects_project" />
+    </changeSet>
+
+</databaseChangeLog>

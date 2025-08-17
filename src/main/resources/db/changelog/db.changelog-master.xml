@@ -10,4 +10,10 @@
         <tagDatabase tag="empty" />
     </changeSet>
 
+    <include file="/db/changelog/v-0.0.1/create-default-models.xml"/>
+
+    <changeSet id="v-0.0.1" author="0xLairon1">
+        <tagDatabase tag="v-0.0.1" />
+    </changeSet>
+
 </databaseChangeLog>
