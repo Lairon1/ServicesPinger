@@ -1,6 +1,9 @@
 package ru.lairon1.servicespinger.repository;
 
+import lombok.NonNull;
 import ru.lairon1.servicespinger.model.UserModel;
+
+import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
@@ -12,4 +15,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public interface UserRepository extends CrudRepository<UserModel, Long> {
+
+    Optional<UserModel> findByChatId(long chatId);
+
 }

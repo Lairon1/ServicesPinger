@@ -3,6 +3,11 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <bean class="ru.lairon1.servicespinger.service.impl.DefaultUserService" name="userService">
+        <property name="userRepository" ref="userRepository"/>
+        <property name="notificationsSettingsService" ref="notificationsSettingsService"/>
+    </bean>
 
+    <bean class="ru.lairon1.servicespinger.service.impl.DefaultNotificationsSettingsService" name="notificationsSettingsService"/>
 
 </beans>
